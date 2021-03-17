@@ -1,8 +1,11 @@
 import csv
 from bs4 import BeautifulSoup 
 from selenium import webdriver
-import re
+import json
 import numpy as np
+from flask import Flask
+from flask_restful import Api, Resource
+from flask_cors import CORS
 
 
 
@@ -34,8 +37,10 @@ def cheapest(item):
 
 
     newPrice = np.array(newPrice)
-    print(newPrice)
+    #print(newPrice)
 
+    res = 0
+    name = item
     minimum = min(newPrice)
 
     #print(minimum)
@@ -69,8 +74,20 @@ def cheapest(item):
         res = res.split()[-1]
 
 
-    print(res)
-    print(final)
+    subItem = {
+        "Rating": final[0],
+        "Count": final[1],
+        "Amount": final[2],
+        "Total": res,
+        "price": final[3],
+        "description": final[4],
+        "url": final[5]
+    }
+
+    return json.dumps(subItem)
+
+    #print(res)
+    #print(final)
 
 
     #print(final)
@@ -105,8 +122,17 @@ def extract_record(item):
 
     return result
 
+app = Flask(__name__)
+api = Api(app)
+CORS(app)
 
-
+class Web(Resource):
+    def get(self, name):
+        return cheapest(name)
+api.add_resource(Web, "/subItem/<string:name>")
+        
+if __name__ == "__main__":
+    app.run(debug=True)
 
 #cheapest('Sugar')
-cheapest('Syrup')
+#cheapest('Syrup')
