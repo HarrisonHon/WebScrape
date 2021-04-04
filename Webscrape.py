@@ -35,12 +35,13 @@ def cheapest(item):
         record = extract_record(item)
         if record:
             if "Ounce" in record[2] or "Oz" in record[2]:
+                return record[2]
                 newAmount = filter(str.isdigit, record[2])
                 finalAmount = "".join(newAmount)
-                records.append(record)
                 newPrice.append(finalAmount)
+            records.append(record)
 
-
+    records = np.array(records)
     newPrice = np.array(newPrice)
     print(newPrice)
 
@@ -48,147 +49,226 @@ def cheapest(item):
     res2 = 0
     res3 = 0
     name = item
-    for i in range(len(newPrice)):
+    
+
+    #minimum = min(newPrice)
+
+    #print(minimum)
+    if len(newPrice) > 0:
+        for i in range(len(newPrice)):
           
         # Check if current element
         # is less than firstmin, 
         # then update first,second
         # and third
   
-        if int(newPrice[i]) < int(firstmin):
-            thirdmin = secmin
-            secmin = firstmin
-            firstmin = newPrice[i]
-  
-        # Check if current element is
-        # less than secmin then update
-        # second and third
-        elif int(newPrice[i]) < int(secmin):
-            thirdmin = secmin
-            secmin = newPrice[i]
-  
-        # Check if current element is
-        # less than,then upadte third
-        elif int(newPrice[i]) < int(thirdmin):
-            thirdmin = newPrice[i]
+            if float(newPrice[i]) < float(firstmin):
+                thirdmin = secmin
+                secmin = firstmin
+                firstmin = newPrice[i]
+    
+            # Check if current element is
+            # less than secmin then update
+            # second and third
+            elif float(newPrice[i]) < float(secmin):
+                thirdmin = secmin
+                secmin = newPrice[i]
+    
+            # Check if current element is
+            # less than,then upadte third
+            elif float(newPrice[i]) < float(thirdmin):
+                thirdmin = newPrice[i]
+        
+        ret = []
+        ret.append(firstmin)
+        ret.append(secmin)
+        ret.append(thirdmin)
+        return ret
 
-    #minimum = min(newPrice)
-
-    #print(minimum)
-
-    for i in range(len(records)):
-        if newPrice[i] == firstmin:
-            iteration1 = i
-        if newPrice[i] == secmin:
-            iteration2 = i
-        if newPrice[i] == thirdmin:
-            iteration3 = i
-
-    final1 = records[iteration1]
-    if "ounce" in records[iteration1][4].lower():
-        res1 = records[iteration1][4].lower().split("ounce")[0]
-        res1 = res1.split()[-1]
-
-    elif "pounds" in records[iteration1][4].lower():
-        res1 = records[iteration1][4].lower().split("pounds")[0]
-        res1 = res1.split()[-1]
-        res1 = int(res1) * 16
-    elif "lbs" in records[iteration1][4].lower():
-        res1 = records[iteration1][4].lower().split("lbs")[0]
-        res1 = res1.split()[-1]
-        res1 = int(res1) * 16
-    elif "lb" in records[iteration1][4].lower():
-        res1 = records[iteration1][4].lower().split("lb")[0]
-        res1 = res1.split()[-1]
-        res1 = int(res1) * 16
-    elif "fl" in records[iteration1][4].lower():
-        res1 = records[iteration1][4].lower().split("fl")[0]
-        res1 = res1.split()[-1]
-    elif "oz" in records[iteration1][4].lower():
-        res1 = records[iteration1][4].lower().split("oz")[0]
-        res1 = res1.split()[-1]
-
-    final2 = records[iteration2]
-    if "ounce" in records[iteration2][4].lower():
-        res2 = records[iteration2][4].lower().split("ounce")[0]
-        res2 = res2.split()[-1]
-
-    elif "pounds" in records[iteration2][4].lower():
-        res2 = records[iteration2][4].lower().split("pounds")[0]
-        res2 = res2.split()[-1]
-        res2 = int(res2) * 16
-    elif "lbs" in records[iteration2][4].lower():
-        res2 = records[iteration2][4].lower().split("lbs")[0]
-        res2 = res2.split()[-1]
-        res2 = int(res2) * 16
-    elif "lb" in records[iteration2][4].lower():
-        res2 = records[iteration2][4].lower().split("lb")[0]
-        res2 = res2.split()[-1]
-        res2 = int(res2) * 16
-    elif "fl" in records[iteration2][4].lower():
-        res2 = records[iteration2][4].lower().split("fl")[0]
-        res2 = res2.split()[-1]
-    elif "oz" in records[iteration2][4].lower():
-        res2 = records[iteration2][4].lower().split("oz")[0]
-        res2 = res2.split()[-1]
+        for i in range(records.shape[0]):
+            records[i][3] = records[i][3].replace('$', '')
+            if float(records[i][3]) == float(firstmin):
+                iteration1 = i
+            elif float(records[i][3]) == float(secmin):
+                iteration2 = i
+            elif float(records[i][3]) == float(thirdmin):
+                iteration3 = i
+            else:
+                iteration1 = 0
+                iteration2 = 0
+                iteration3 = 0
 
 
-    final3 = records[iteration3]
-    if "ounce" in records[iteration3][4].lower():
-        res3 = records[iteration3][4].lower().split("ounce")[0]
-        res3 = res3.split()[-1]
+        final1 = records[iteration1]
+        final2 = records[iteration2]
+        final3 = records[iteration3]
+        if "ounce" in records[iteration1][4].lower():
+            res1 = records[iteration1][4].lower().split("ounce")[0]
+            res1 = res1.split()[-1]
 
-    elif "pounds" in records[iteration3][4].lower():
-        res3 = records[iteration3][4].lower().split("pounds")[0]
-        res3 = res3.split()[-1]
-        res3 = int(res3) * 16
-    elif "lbs" in records[iteration3][4].lower():
-        res3 = records[iteration3][4].lower().split("lbs")[0]
-        res3 = res3.split()[-1]
-        res3 = int(res3) * 16
-    elif "lb" in records[iteration3][4].lower():
-        res3 = records[iteration3][4].lower().split("lb")[0]
-        res3 = res3.split()[-1]
-        res3 = int(res3) * 16
-    elif "fl" in records[iteration3][4].lower():
-        res3 = records[iteration3][4].lower().split("fl")[0]
-        res3 = res3.split()[-1]
-    elif "oz" in records[iteration3][4].lower():
-        res3 = records[iteration3][4].lower().split("oz")[0]
-        res3 = res3.split()[-1]
+        elif "pounds" in records[iteration1][4].lower():
+            res1 = records[iteration1][4].lower().split("pounds")[0]
+            res1 = res1.split()[-1]
+            res1 = float(res1) * 16
+        elif "lbs" in records[iteration1][4].lower():
+            res1 = records[iteration1][4].lower().split("lbs")[0]
+            res1 = res1.split()[-1]
+            res1 = float(res1) * 16
+        elif "lb" in records[iteration1][4].lower():
+            res1 = records[iteration1][4].lower().split("lb")[0]
+            res1 = res1.split()[-1]
+            res1 = float(res1) * 16
+        elif "fl" in records[iteration1][4].lower():
+            res1 = records[iteration1][4].lower().split("fl")[0]
+            res1 = res1.split()[-1]
+        elif "oz" in records[iteration1][4].lower():
+            res1 = records[iteration1][4].lower().split("oz")[0]
+            res1 = res1.split()[-1]
 
-    subItem1 = {
-        "Rating": final1[0],
-        "Count": final1[1],
-        "Amount": final1[2],
-        "Total": res1,
-        "price": final1[3],
-        "description": final1[4],
-        "url": final1[5]
-    }
-    subItem2 = {
-        "Rating": final2[0],
-        "Count": final2[1],
-        "Amount": final2[2],
-        "Total": res2,
-        "price": final2[3],
-        "description": final2[4],
-        "url": final2[5]
-    }
-    subItem3 = {
-        "Rating": final3[0],
-        "Count": final3[1],
-        "Amount": final3[2],
-        "Total": res3,
-        "price": final3[3],
-        "description": final3[4],
-        "url": final3[5]
-    }
+        
+        if "ounce" in records[iteration2][4].lower():
+            res2 = records[iteration2][4].lower().split("ounce")[0]
+            res2 = res2.split()[-1]
+
+        elif "pounds" in records[iteration2][4].lower():
+            res2 = records[iteration2][4].lower().split("pounds")[0]
+            res2 = res2.split()[-1]
+            res2 = float(res2) * 16
+        elif "lbs" in records[iteration2][4].lower():
+            res2 = records[iteration2][4].lower().split("lbs")[0]
+            res2 = res2.split()[-1]
+            res2 = float(res2) * 16
+        elif "lb" in records[iteration2][4].lower():
+            res2 = records[iteration2][4].lower().split("lb")[0]
+            res2 = res2.split()[-1]
+            res2 = float(res2) * 16
+        elif "fl" in records[iteration2][4].lower():
+            res2 = records[iteration2][4].lower().split("fl")[0]
+            res2 = res2.split()[-1]
+        elif "oz" in records[iteration2][4].lower():
+            res2 = records[iteration2][4].lower().split("oz")[0]
+            res2 = res2.split()[-1]
+
+
+        if "ounce" in records[iteration3][4].lower():
+            res3 = records[iteration3][4].lower().split("ounce")[0]
+            res3 = res3.split()[-1]
+
+        elif "pounds" in records[iteration3][4].lower():
+            res3 = records[iteration3][4].lower().split("pounds")[0]
+            res3 = res3.split()[-1]
+            res3 = float(res3) * 16
+        elif "lbs" in records[iteration3][4].lower():
+            res3 = records[iteration3][4].lower().split("lbs")[0]
+            res3 = res3.split()[-1]
+            res3 = float(res3) * 16
+        elif "lb" in records[iteration3][4].lower():
+            res3 = records[iteration3][4].lower().split("lb")[0]
+            res3 = res3.split()[-1]
+            res3 = float(res3) * 16
+        elif "fl" in records[iteration3][4].lower():
+            res3 = records[iteration3][4].lower().split("fl")[0]
+            res3 = res3.split()[-1]
+        elif "oz" in records[iteration3][4].lower():
+            res3 = records[iteration3][4].lower().split("oz")[0]
+            res3 = res3.split()[-1]
+
+        subItem1 = {
+            "Rating": final1[0],
+            "Count": final1[1],
+            "Amount": final1[2],
+            "Total": res1,
+            "price": final1[3],
+            "description": final1[4],
+            "url": final1[5]
+        }
+        subItem2 = {
+            "Rating": final2[0],
+            "Count": final2[1],
+            "Amount": final2[2],
+            "Total": res2,
+            "price": final2[3],
+            "description": final2[4],
+            "url": final2[5]
+        }
+        subItem3 = {
+            "Rating": final3[0],
+            "Count": final3[1],
+            "Amount": final3[2],
+            "Total": res3,
+            "price": final3[3],
+            "description": final3[4],
+            "url": final3[5]
+        }
+    else:
+        for i in range(len(records)):
+          
+            # Check if current element
+            # is less than firstmin, 
+            # then update first,second
+            # and third
+            records[i][3] = records[i][3].replace('$', '')
+            if float(records[i][3]) < firstmin:
+                thirdmin = secmin
+                secmin = firstmin
+                firstmin = records[i][3]
+    
+            # Check if current element is
+            # less than secmin then update
+            # second and third
+            elif records[i][3] < secmin:
+                thirdmin = secmin
+                secmin = records[i][3]
+    
+            # Check if current element is
+            # less than,then upadte third
+            elif records[i][3] < thirdmin:
+                thirdmin = records[i][3]
+            
+            for i in range(len(records)):
+                if records[i][3] == float(firstmin):
+                    iteration1 = i
+                    final1 = records[i]
+                elif records[i][3] == float(secmin):
+                    iteration2 = i
+                    final2 = records[i]
+                elif records[i][3] == float(thirdmin):
+                    iteration3 = i
+                    final3 = records[i]
+            
+            subItem1 = {
+            "Rating": final1[0],
+            "Count": final1[1],
+            "Amount": final1[2],
+            "price": final1[3],
+            "description": final1[4],
+            "url": final1[5]
+        }
+        subItem2 = {
+            "Rating": final2[0],
+            "Count": final2[1],
+            "Amount": final2[2],
+            "price": final2[3],
+            "description": final2[4],
+            "url": final2[5]
+        }
+        subItem3 = {
+            "Rating": final3[0],
+            "Count": final3[1],
+            "Amount": final3[2],
+            "price": final3[3],
+            "description": final3[4],
+            "url": final3[5]
+        }
+
+
+
     items = []
     items.append(subItem1)
     items.append(subItem2)
     items.append(subItem3)
 
+    
     return items
 
     #print(res)
