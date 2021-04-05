@@ -35,15 +35,14 @@ def cheapest(item):
         record = extract_record(item)
         if record:
             if "Ounce" in record[2] or "Oz" in record[2]:
-                return record[2]
                 newAmount = filter(str.isdigit, record[2])
                 finalAmount = "".join(newAmount)
                 newPrice.append(finalAmount)
-            records.append(record)
+                records.append(record)
+            
 
     records = np.array(records)
     newPrice = np.array(newPrice)
-    print(newPrice)
 
     res1 = 0
     res2 = 0
@@ -78,30 +77,29 @@ def cheapest(item):
             # less than,then upadte third
             elif float(newPrice[i]) < float(thirdmin):
                 thirdmin = newPrice[i]
-        
-        ret = []
-        ret.append(firstmin)
-        ret.append(secmin)
-        ret.append(thirdmin)
-        return ret
-
-        for i in range(records.shape[0]):
-            records[i][3] = records[i][3].replace('$', '')
-            if float(records[i][3]) == float(firstmin):
+        #Iteration match
+        for i in range(len(newPrice)):
+            if(newPrice[i] == firstmin):
                 iteration1 = i
-            elif float(records[i][3]) == float(secmin):
+            if(newPrice[i] == secmin):
                 iteration2 = i
-            elif float(records[i][3]) == float(thirdmin):
+            if(newPrice[i] == thirdmin):
                 iteration3 = i
-            else:
-                iteration1 = 0
-                iteration2 = 0
-                iteration3 = 0
+           
+        for i in range(records.shape[0]):
+            newAmount2 = filter(str.isdigit, record[2])
+            if(newAmount2 == newPrice[iteration1]):
+                it1 = i
+            if(newAmount2 == newPrice[iteration2]):
+                it2 = i
+            if(newAmount2 == newPrice[iteration3]):
+                it3 = i
 
 
         final1 = records[iteration1]
         final2 = records[iteration2]
         final3 = records[iteration3]
+
         if "ounce" in records[iteration1][4].lower():
             res1 = records[iteration1][4].lower().split("ounce")[0]
             res1 = res1.split()[-1]
@@ -152,6 +150,7 @@ def cheapest(item):
 
         if "ounce" in records[iteration3][4].lower():
             res3 = records[iteration3][4].lower().split("ounce")[0]
+            res3 = res.replace('(', '')
             res3 = res3.split()[-1]
 
         elif "pounds" in records[iteration3][4].lower():
@@ -201,14 +200,14 @@ def cheapest(item):
             "url": final3[5]
         }
     else:
-        for i in range(len(records)):
+        for i in range(records.shape[0]):
           
             # Check if current element
             # is less than firstmin, 
             # then update first,second
             # and third
             records[i][3] = records[i][3].replace('$', '')
-            if float(records[i][3]) < firstmin:
+            if float(records[i][3]) < float(firstmin):
                 thirdmin = secmin
                 secmin = firstmin
                 firstmin = records[i][3]
@@ -216,33 +215,35 @@ def cheapest(item):
             # Check if current element is
             # less than secmin then update
             # second and third
-            elif records[i][3] < secmin:
+            elif float(records[i][3]) < float(secmin):
                 thirdmin = secmin
                 secmin = records[i][3]
     
             # Check if current element is
             # less than,then upadte third
-            elif records[i][3] < thirdmin:
+            elif float(records[i][3]) < float(thirdmin):
                 thirdmin = records[i][3]
+        #Iterator matchup check
+        for i in range(records.shape[0]):
+            if float(records[i][3]) == float(firstmin):
+                iteration1 = i
+            elif float(records[i][3]) == float(secmin):
+                iteration2 = i
+            elif float(records[i][3]) == float(thirdmin):
+                iteration3 = i
             
-            for i in range(len(records)):
-                if records[i][3] == float(firstmin):
-                    iteration1 = i
-                    final1 = records[i]
-                elif records[i][3] == float(secmin):
-                    iteration2 = i
-                    final2 = records[i]
-                elif records[i][3] == float(thirdmin):
-                    iteration3 = i
-                    final3 = records[i]
-            
-            subItem1 = {
-            "Rating": final1[0],
-            "Count": final1[1],
-            "Amount": final1[2],
-            "price": final1[3],
-            "description": final1[4],
-            "url": final1[5]
+        final1 = records[iteration1]
+        final2 = records[iteration2]
+        final3 = records[iteration3]
+
+    
+        subItem1 = {
+        "Rating": final1[0],
+        "Count": final1[1],
+        "Amount": final1[2],
+        "price": final1[3],
+        "description": final1[4],
+        "url": final1[5]
         }
         subItem2 = {
             "Rating": final2[0],
@@ -260,7 +261,6 @@ def cheapest(item):
             "description": final3[4],
             "url": final3[5]
         }
-
 
 
     items = []
