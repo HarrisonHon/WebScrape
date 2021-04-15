@@ -9,10 +9,6 @@ from flask_cors import CORS
 
 MAX = 10000000
 
-
-#url = 'https://www.amazon.com'
-
-
 def getUrl(search):
     template = 'https://www.amazon.com/s?k={}&ref=nb_sb_noss_1'
     search = search.replace(' ', '+')
@@ -39,8 +35,10 @@ def cheapest(item):
                 finalAmount = "".join(newAmount)
                 newPrice.append(finalAmount)
                 records.append(record)
-            
 
+
+            
+    driver.close()
     records = np.array(records)
     newPrice = np.array(newPrice)
 
@@ -51,12 +49,12 @@ def cheapest(item):
     #print(minimum)
     if len(newPrice) > 0:
         for i in range(len(newPrice)):
-          
+        
         # Check if current element
         # is less than firstmin, 
         # then update first,second
         # and third
-  
+
             if float(newPrice[i]) < float(firstmin):
                 thirdmin = secmin
                 secmin = firstmin
@@ -81,7 +79,7 @@ def cheapest(item):
                 iteration2 = i
             if(newPrice[i] == thirdmin):
                 iteration3 = i
-           
+        
         for i in range(records.shape[0]):
             newAmount2 = filter(str.isdigit, record[2])
             if(newAmount2 == newPrice[iteration1]):
@@ -123,6 +121,8 @@ def cheapest(item):
             res1 = records[iteration1][4].lower().split("oz")[0]
             res1 = res1.split()[-1]
             res1 = res1.replace('(', '')
+        else:
+            res1 = records[iteration1][4]
 
         
         if "ounce" in records[iteration2][4].lower():
@@ -153,6 +153,8 @@ def cheapest(item):
             res2 = records[iteration2][4].lower().split("oz")[0]
             res2 = res2.split()[-1]
             res2 = res2.replace('(', '')
+        else:
+            res2 = records[iteration2][4]
 
 
         if "ounce" in records[iteration3][4].lower():
@@ -183,6 +185,8 @@ def cheapest(item):
             res3 = records[iteration3][4].lower().split("oz")[0]
             res3 = res3.split()[-1]
             res3 = res3.replace('(', '')
+        else:
+            res3 = records[iteration3][4]
 
         
         subItem1 = {
