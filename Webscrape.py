@@ -35,18 +35,11 @@ def cheapest(item):
                 finalAmount = "".join(newAmount)
                 newPrice.append(finalAmount)
                 records.append(record)
-
-
             
     driver.close()
     records = np.array(records)
     newPrice = np.array(newPrice)
 
-    
-
-    #minimum = min(newPrice)
-
-    #print(minimum)
     if len(newPrice) > 0:
         for i in range(len(newPrice)):
         
@@ -103,6 +96,11 @@ def cheapest(item):
             res1 = res1.split()[-1]
             res1 = res1.replace('(', '')
             res1 = float(res1) * 16
+        elif "pound" in records[iteration1][4].lower():
+            res1 = records[iteration1][4].lower().split("pound")[0]
+            res1 = res1.split()[-1]
+            res1 = res1.replace('(', '')
+            res1 = float(res1) * 16
         elif "lbs" in records[iteration1][4].lower():
             res1 = records[iteration1][4].lower().split("lbs")[0]
             res1 = res1.split()[-1]
@@ -121,6 +119,11 @@ def cheapest(item):
             res1 = records[iteration1][4].lower().split("oz")[0]
             res1 = res1.split()[-1]
             res1 = res1.replace('(', '')
+        elif "liter" in records[iteration1][4].lower():
+            res1 = records[iteration1][4].lower().split("liter")[0]
+            res1 = res1.split()[-1]
+            res1 = res1.replace('(', '')
+            res1 = float(res1) * 33.814
         else:
             res1 = records[iteration1][4]
 
@@ -132,6 +135,11 @@ def cheapest(item):
 
         elif "pounds" in records[iteration2][4].lower():
             res2 = records[iteration2][4].lower().split("pounds")[0]
+            res2 = res2.split()[-1]
+            res2 = res2.replace('(', '')
+            res2 = float(res2) * 16
+        elif "pound" in records[iteration2][4].lower():
+            res2 = records[iteration2][4].lower().split("pound")[0]
             res2 = res2.split()[-1]
             res2 = res2.replace('(', '')
             res2 = float(res2) * 16
@@ -153,6 +161,11 @@ def cheapest(item):
             res2 = records[iteration2][4].lower().split("oz")[0]
             res2 = res2.split()[-1]
             res2 = res2.replace('(', '')
+        elif "liter" in records[iteration2][4].lower():
+            res2 = records[iteration2][4].lower().split("liter")[0]
+            res2 = res2.split()[-1]
+            res2 = res2.replace('(', '')
+            res2 = float(res2) * 33.814
         else:
             res2 = records[iteration2][4]
 
@@ -167,6 +180,11 @@ def cheapest(item):
             res3 = res3.split()[-1]
             res3 = res3.replace('(', '')
             res3 = float(res3) * 16
+        elif "pound" in records[iteration3][4].lower():
+            res3 = records[iteration3][4].lower().split("pound")[0]
+            res3 = res3.split()[-1]
+            res3 = res3.replace('(', '')
+            res3 = float(res1) * 16
         elif "lbs" in records[iteration3][4].lower():
             res3 = records[iteration3][4].lower().split("lbs")[0]
             res3 = res3.split()[-1]
@@ -185,6 +203,11 @@ def cheapest(item):
             res3 = records[iteration3][4].lower().split("oz")[0]
             res3 = res3.split()[-1]
             res3 = res3.replace('(', '')
+        elif "liter" in records[iteration3][4].lower():
+            res3 = records[iteration3][4].lower().split("liter")[0]
+            res3 = res3.split()[-1]
+            res3 = res3.replace('(', '')
+            res3 = float(res3) * 33.814
         else:
             res3 = records[iteration3][4]
 
@@ -193,7 +216,7 @@ def cheapest(item):
             "Rating": final1[0],
             "Count": final1[1],
             "Amount": final1[2],
-            "Total": res1,
+            "Total": str(res1) + " oz",
             "price": final1[3],
             "description": final1[4],
             "url": final1[5]
@@ -202,7 +225,7 @@ def cheapest(item):
             "Rating": final2[0],
             "Count": final2[1],
             "Amount": final2[2],
-            "Total": res2,
+            "Total": str(res2) + " oz",
             "price": final2[3],
             "description": final2[4],
             "url": final2[5]
@@ -211,7 +234,7 @@ def cheapest(item):
             "Rating": final3[0],
             "Count": final3[1],
             "Amount": final3[2],
-            "Total": res3,
+            "Total": str(res3) + " oz",
             "price": final3[3],
             "description": final3[4],
             "url": final3[5]
@@ -239,12 +262,6 @@ def cheapest(item):
 
     
     return items
-
-    #print(res)
-    #print(final)
-
-
-    #print(final)
 
 
 def extract_record(item):
@@ -287,6 +304,3 @@ api.add_resource(Web, "/subItem/<string:name>")
         
 if __name__ == "__main__":
     app.run(debug=True)
-
-#cheapest('Sugar')
-#cheapest('Syrup')
