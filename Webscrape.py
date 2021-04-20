@@ -26,6 +26,8 @@ def cheapest(item):
     result = soup.find_all('div', {'data-component-type': 's-search-result'})
 
     records = []
+    secRecords = []
+    thirdRecords = []
     newPrice = []
     for item in result:
         record = extract_record(item)
@@ -35,10 +37,18 @@ def cheapest(item):
                 finalAmount = "".join(newAmount)
                 newPrice.append(finalAmount)
                 records.append(record)
+            elif record[0] and record[2] == '':
+                secRecords.append(record)
+            elif record[3] and record[4] and record[5] and record[0] == '' and record[1] == '':
+                thirdRecords.append(record)
+            
             
     driver.close()
     records = np.array(records)
     newPrice = np.array(newPrice)
+    secRecords = np.array(secRecords)
+    thirdRecords = np.array(thirdRecords)
+
 
     if len(newPrice) > 0:
         for i in range(len(newPrice)):
@@ -217,7 +227,7 @@ def cheapest(item):
             "Count": final1[1],
             "Amount": final1[2],
             "Total": str(res1) + " oz",
-            "price": final1[3],
+            "price": "$" + final1[3],
             "description": final1[4],
             "url": final1[5]
         }
@@ -226,7 +236,7 @@ def cheapest(item):
             "Count": final2[1],
             "Amount": final2[2],
             "Total": str(res2) + " oz",
-            "price": final2[3],
+            "price": "$" + final2[3],
             "description": final2[4],
             "url": final2[5]
         }
@@ -235,10 +245,140 @@ def cheapest(item):
             "Count": final3[1],
             "Amount": final3[2],
             "Total": str(res3) + " oz",
-            "price": final3[3],
+            "price": "$" + final3[3],
             "description": final3[4],
             "url": final3[5]
         }
+
+    elif len(secRecords) > 0:
+        for i in range(secRecords.shape[0]):
+            secRecords[i][3] = secRecords[i][3].replace("$", "")
+          
+        # Check if current element
+        # is less than firstmin, 
+        # then update first,second
+        # and third
+            if float(secRecords[i][3]) < float(firstmin):
+                thirdmin = secmin
+                secmin = firstmin
+                firstmin = secRecords[i][3]
+    
+            # Check if current element is
+            # less than secmin then update
+            # second and third
+            elif float(secRecords[i][3]) < float(secmin):
+                thirdmin = secmin
+                secmin = secRecords[i][3]
+    
+            # Check if current element is
+            # less than,then upadte third
+            elif float(secRecords[i][3]) < float(thirdmin):
+                thirdmin = secRecords[i][3]
+        #Iteration match
+        for i in range(len(secRecords)):
+            if(secRecords[i][3] == firstmin):
+                iteration1 = i
+            if(secRecords[i][3] == secmin):
+                iteration2 = i
+            if(secRecords[i][3] == thirdmin):
+                iteration3 = i
+        
+        final1 = secRecords[iteration1]
+        final2 = secRecords[iteration2]
+        final3 = secRecords[iteration3]
+
+        subItem1 = {
+            "Rating": final1[0],
+            "Count": final1[1],
+            "Amount": "N/A",
+            "Total": "N/A",
+            "price": "$" + final1[3],
+            "description": final1[4],
+            "url": final1[5]
+        }
+        subItem2 = {
+            "Rating": final2[0],
+            "Count": final2[1],
+            "Amount": "N/A",
+            "Total": "N/A",
+            "price": "$" + final2[3],
+            "description": final2[4],
+            "url": final2[5]
+        }
+        subItem3 = {
+            "Rating": final3[0],
+            "Count": final3[1],
+            "Amount": "N/A",
+            "Total": "N/A",
+            "price": "$" + final3[3],
+            "description": final3[4],
+            "url": final3[5]
+        }
+    elif len(thirdRecords) > 0:
+        for i in range(thirdRecords.shape[0]):
+            thirdRecords[i][3] = thirdRecords[i][3].replace("$", "")
+          
+        # Check if current element
+        # is less than firstmin, 
+        # then update first,second
+        # and third
+            if float(thirdRecords[i][3]) < float(firstmin):
+                thirdmin = secmin
+                secmin = firstmin
+                firstmin = thirdRecords[i][3]
+    
+            # Check if current element is
+            # less than secmin then update
+            # second and third
+            elif float(thirdRecords[i][3]) < float(secmin):
+                thirdmin = secmin
+                secmin = thirdRecords[i][3]
+    
+            # Check if current element is
+            # less than,then upadte third
+            elif float(thirdRecords[i][3]) < float(thirdmin):
+                thirdmin = thirdRecords[i][3]
+        #Iteration match
+        for i in range(len(thirdRecords)):
+            if(thirdRecords[i][3] == firstmin):
+                iteration1 = i
+            if(thirdRecords[i][3] == secmin):
+                iteration2 = i
+            if(thirdRecords[i][3] == thirdmin):
+                iteration3 = i
+        
+        final1 = thirdRecords[iteration1]
+        final2 = thirdRecords[iteration2]
+        final3 = thirdRecords[iteration3]
+
+        subItem1 = {
+            "Rating": "N/A Please try again",
+            "Count": "N/A Please try again",
+            "Amount": "N/A",
+            "Total": "N/A",
+            "price": "$" + final1[3],
+            "description": final1[4],
+            "url": final1[5]
+        }
+        subItem2 = {
+            "Rating": "N/A Please try again",
+            "Count": "N/A Please try again",
+            "Amount": "N/A",
+            "Total": "N/A",
+            "price": "$" + final2[3],
+            "description": final2[4],
+            "url": final2[5]
+        }
+        subItem3 = {
+            "Rating": "N/A Please try again",
+            "Count": "N/A Please try again",
+            "Amount": "N/A",
+            "Total": "N/A",
+            "price": "$" + final3[3],
+            "description": final3[4],
+            "url": final3[5]
+        }
+
     else:
         errorItem = []
         subItem1 = {
