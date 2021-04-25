@@ -316,7 +316,7 @@ def cheapest(item):
         }
     elif len(thirdRecords) > 0:
         for i in range(thirdRecords.shape[0]):
-            thirdRecords[i][3] = thirdRecords[i][3].replace("$", "")
+            thirdRecords[i][3] = thirdRecords[i][3].replace("$", "").replace(",", "")
           
         # Check if current element
         # is less than firstmin, 
@@ -352,8 +352,8 @@ def cheapest(item):
         final3 = thirdRecords[iteration3]
 
         subItem1 = {
-            "Rating": "N/A Please try again",
-            "Count": "N/A Please try again",
+            "Rating": "Not currenty available. Please try again",
+            "Count": "Not currenty available. Please try again",
             "Amount": "N/A",
             "Total": "N/A",
             "price": "$" + final1[3],
@@ -361,8 +361,8 @@ def cheapest(item):
             "url": final1[5]
         }
         subItem2 = {
-            "Rating": "N/A Please try again",
-            "Count": "N/A Please try again",
+            "Rating": "Not currenty available. Please try again",
+            "Count": "Not currenty available. Please try again",
             "Amount": "N/A",
             "Total": "N/A",
             "price": "$" + final2[3],
@@ -370,8 +370,8 @@ def cheapest(item):
             "url": final2[5]
         }
         subItem3 = {
-            "Rating": "N/A Please try again",
-            "Count": "N/A Please try again",
+            "Rating": "Not currenty available. Please try again",
+            "Count": "Not currenty available. Please try again",
             "Amount": "N/A",
             "Total": "N/A",
             "price": "$" + final3[3],
