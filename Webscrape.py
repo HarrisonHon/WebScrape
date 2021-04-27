@@ -292,7 +292,7 @@ def cheapest(item):
             "Count": final1[1],
             "Amount": "N/A",
             "Total": "N/A",
-            "price": final1[3],
+            "price": "$" + final1[3],
             "description": final1[4],
             "url": final1[5]
         }
@@ -301,7 +301,7 @@ def cheapest(item):
             "Count": final2[1],
             "Amount": "N/A",
             "Total": "N/A",
-            "price": final2[3],
+            "price": "$" + final2[3],
             "description": final2[4],
             "url": final2[5]
         }
@@ -310,7 +310,7 @@ def cheapest(item):
             "Count": final3[1],
             "Amount": "N/A",
             "Total": "N/A",
-            "price": final3[3],
+            "price": "$" + final3[3],
             "description": final3[4],
             "url": final3[5]
         }
