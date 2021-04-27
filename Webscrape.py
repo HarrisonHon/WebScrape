@@ -227,7 +227,7 @@ def cheapest(item):
             "Count": final1[1],
             "Amount": final1[2],
             "Total": str(res1) + " oz",
-            "price": "$" + final1[3],
+            "price": final1[3],
             "description": final1[4],
             "url": final1[5]
         }
@@ -236,7 +236,7 @@ def cheapest(item):
             "Count": final2[1],
             "Amount": final2[2],
             "Total": str(res2) + " oz",
-            "price": "$" + final2[3],
+            "price": final2[3],
             "description": final2[4],
             "url": final2[5]
         }
@@ -245,7 +245,7 @@ def cheapest(item):
             "Count": final3[1],
             "Amount": final3[2],
             "Total": str(res3) + " oz",
-            "price": "$" + final3[3],
+            "price": final3[3],
             "description": final3[4],
             "url": final3[5]
         }
@@ -292,7 +292,7 @@ def cheapest(item):
             "Count": final1[1],
             "Amount": "N/A",
             "Total": "N/A",
-            "price": "$" + final1[3],
+            "price": final1[3],
             "description": final1[4],
             "url": final1[5]
         }
@@ -301,7 +301,7 @@ def cheapest(item):
             "Count": final2[1],
             "Amount": "N/A",
             "Total": "N/A",
-            "price": "$" + final2[3],
+            "price": final2[3],
             "description": final2[4],
             "url": final2[5]
         }
@@ -310,7 +310,7 @@ def cheapest(item):
             "Count": final3[1],
             "Amount": "N/A",
             "Total": "N/A",
-            "price": "$" + final3[3],
+            "price": final3[3],
             "description": final3[4],
             "url": final3[5]
         }
@@ -356,7 +356,7 @@ def cheapest(item):
             "Count": "Not currenty available. Please try again",
             "Amount": "N/A",
             "Total": "N/A",
-            "price": "$" + final1[3],
+            "price": final1[3],
             "description": final1[4],
             "url": final1[5]
         }
@@ -365,7 +365,7 @@ def cheapest(item):
             "Count": "Not currenty available. Please try again",
             "Amount": "N/A",
             "Total": "N/A",
-            "price": "$" + final2[3],
+            "price": final2[3],
             "description": final2[4],
             "url": final2[5]
         }
@@ -374,7 +374,7 @@ def cheapest(item):
             "Count": "Not currenty available. Please try again",
             "Amount": "N/A",
             "Total": "N/A",
-            "price": "$" + final3[3],
+            "price": final3[3],
             "description": final3[4],
             "url": final3[5]
         }
@@ -418,14 +418,14 @@ def extract_record(item):
 
     try:
         rating = item.i.text
-        review_count = item.find('span', {'class': 'a-size-base', 'dir': 'auto'}).text
+        review_count = item.find('span', 'a-size-base').text
 
     except AttributeError:
         rating = ''
         review_count = ''
 
     try: 
-        amount = item.find('span', {'class': 'a-size-base a-color-secondary', 'dir': 'auto'}).text
+        amount = item.find('span','a-size-base a-color-secondary').text
     except AttributeError:
         amount = ''
     
